@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm
+  namespace: bidflow
+data:
+  bidflow-realm.json: |
+    {
+      "realm": "bidflow",
+      "enabled": true,
+      "displayName": "BidFlow",
+
+      "roles": {
+        "realm": [
+          { "name": "BIDDER", "description": "Can place bids" },
+          { "name": "SELLER", "description": "Can create auctions" },
+          { "name": "ADMIN", "description": "Can administer the platform" }
+        ]
+      },
+
+      "clients": [
+        {
+          "clientId": "bidflow-api-gateway",
+          "name": "BidFlow API Gateway",
+          "enabled": true,
+          "protocol": "openid-connect",
+          "publicClient": true,
+          "directAccessGrantsEnabled": true,
+          "standardFlowEnabled": true,
+          "redirectUris": ["http://localhost:8085/*"],
+          "webOrigins": ["http://localhost:8085"]
+        }
+      ],
+
+      "users": [
+        {
+          "username": "seller1",
+          "enabled": true,
+          "email": "seller1@bidflow.com",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["SELLER"]
+        },
+        {
+          "username": "bidder1",
+          "enabled": true,
+          "email": "bidder1@bidflow.com",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["BIDDER"]
+        },
+        {
+          "username": "admin1",
+          "enabled": true,
+          "email": "admin1@bidflow.com",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "password",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["ADMIN"]
+        }
+      ]
+    }

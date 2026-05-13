@@ -1,0 +1,42 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: api-gateway
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bidflow
+      client:
+        registration:
+          keycloak:
+            client-id: bidflow-api-gateway
+            client-secret: ""
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/bidflow
+
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://config-server:8888}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+# Local fallback for development (overridden by config server)
+gateway:
+  routes:
+    - id: local-actuator
+      uri: http://localhost:8085
+      predicates:
+        - Path=/local/**
+      filters:
+        - StripPrefix=1

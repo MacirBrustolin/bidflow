@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: config-server
+  namespace: bidflow
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: config.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: config-server
+                port:
+                  number: 8888

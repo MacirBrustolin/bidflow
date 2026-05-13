@@ -1,0 +1,3 @@
+com\bidflow\apigateway\controller\MeController.class
+com\bidflow\apigateway\config\SecurityConfig.class
+com\bidflow\apigateway\ApiGatewayApplication.class
